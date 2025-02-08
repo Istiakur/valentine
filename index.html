@@ -14,9 +14,12 @@
             flex-direction: column;
             font-family: Arial, sans-serif;
             overflow: hidden;
+            text-align: center;
+            padding: 10px;
+            position: relative;
         }
         h1 {
-            font-size: 2.5em;
+            font-size: 2em;
             color: #d63384;
             text-shadow: 2px 2px #fff;
         }
@@ -24,7 +27,7 @@
             margin-top: 20px;
         }
         button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 1.2em;
             border: none;
             cursor: pointer;
@@ -42,8 +45,8 @@
         }
         .flower {
             position: absolute;
-            bottom: 0;
-            width: 100px;
+            bottom: 10px;
+            width: 80px;
             animation: grow 3s ease-in-out infinite alternate;
         }
         @keyframes grow {
@@ -53,29 +56,61 @@
         .heart {
             position: absolute;
             color: red;
-            font-size: 24px;
+            font-size: 20px;
             animation: float 4s linear infinite;
         }
         @keyframes float {
             0% { transform: translateY(0); opacity: 1; }
             100% { transform: translateY(-100vh); opacity: 0; }
         }
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: gold;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: explode 1s ease-out forwards;
+        }
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+        .thank-you {
+            font-size: 2em;
+            color: #ff4d6d;
+            margin-top: 20px;
+            display: none;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            .flower {
+                width: 60px;
+            }
+            button {
+                font-size: 1em;
+                padding: 10px 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <h1>Will you be my Valentine? 💖</h1>
     <div class="buttons">
-        <button class="yes" onclick="alert('Yay! ❤️')">Yes</button>
+        <button class="yes" onclick="celebrate()">Yes</button>
         <button class="no" onmouseover="moveNoButton()">No</button>
     </div>
-    <img class="flower" src="https://i.imgur.com/U3Y8yoA.png" alt="flower">
+    <p class="thank-you">Thank you! ❤️</p>
+    <img class="flower" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Simple_red_rose.svg/512px-Simple_red_rose.svg.png" alt="flower">
     <script>
         function moveNoButton() {
             const button = document.querySelector('.no');
             const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 50);
-            button.style.left = `${x}px`;
-            button.style.top = `${y}px`;
+            const y = Math.random() * (window.innerHeight - 150);
+            button.style.left = `${Math.max(10, x)}px`;
+            button.style.top = `${Math.max(10, y)}px`;
         }
         function createHeart() {
             const heart = document.createElement('div');
@@ -83,10 +118,23 @@
             heart.innerHTML = '❤️';
             document.body.appendChild(heart);
             heart.style.left = Math.random() * window.innerWidth + 'px';
-            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
-            setTimeout(() => heart.remove(), 4000);
+            heart.style.animationDuration = Math.random() * 2 + 2 + 's';
+            setTimeout(() => heart.remove(), 3000);
         }
-        setInterval(createHeart, 500);
+        setInterval(createHeart, 800);
+        function celebrate() {
+            document.querySelector('.thank-you').style.display = 'block';
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.classList.add('firework');
+                    firework.style.left = Math.random() * window.innerWidth + 'px';
+                    firework.style.top = Math.random() * window.innerHeight + 'px';
+                    document.body.appendChild(firework);
+                    setTimeout(() => firework.remove(), 1000);
+                }, i * 100);
+            }
+        }
     </script>
 </body>
 </html>
